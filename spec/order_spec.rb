@@ -40,4 +40,11 @@ RSpec.describe Order do
     end
   end
 
+  context "when order is empty" do
+    it "fails when checking out" do
+      jason = Order.new
+      expect { jason.checkout }.to raise_error "Nothing to checkout"
+    end
+  end
+
 end

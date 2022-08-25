@@ -35,6 +35,11 @@ class Order
     fail "Nothing in order" if @order.empty?
     "#{@order.join("\n")}\nTotal: £#{@total}"
   end
+
+  def checkout
+    fail "Nothing to checkout" if @order.empty?
+    puts "Your order was successful."
+  end
 end
 
   
