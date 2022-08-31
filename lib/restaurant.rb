@@ -1,3 +1,4 @@
+require 'dotenv/load'
 class Restaurant
     def initialize(io)
         @io = io
@@ -70,6 +71,7 @@ class Restaurant
     end
 
     def revert_changes
+
         @order.each {|item|
         item.revert_changes}
     end
@@ -80,5 +82,27 @@ class Restaurant
         dietary_string << "#{item.name} - #{item.attributes}"}
         return dietary_string
     end
-  
-end
+
+    def checkout
+        "Your order is complete:\n#{view_order}"
+       sms_confirmation
+    end
+
+    private
+
+    def sms_confirmation
+        require 'twilio-ruby'
+        account_sid = ENV["TWILIO_ACCOUNT_SID"]
+        auth_token = ENV["TWILIO_AUTH_TOKEN"]
+        client = Twilio::REST::Client.new(account_sid, auth_token)
+
+        from = '+18148319758' # Your Twilio number
+        to = '+447759277252' # Your mobile phone number
+
+        client.messages.create(
+        from: from,
+        to: to,
+        body: "Your order is complete, it will be delivered at #{Time.now + 30*60}"
+        )
+    end
+end 
